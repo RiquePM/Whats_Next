@@ -1,30 +1,47 @@
-from datetime import datetime
+from datetime import date
 from functools import total_ordering
 
 @total_ordering
 class Task():
 
-    def __init__(self, id, name, description, priority=None, conclusion_date=None):
+    priorities = {"None": 0, "Low": 1, "Medium": 2, "High": 3}
+    
+    def __init__(self, id, name, description, priority="None", conclusion_date=None):
         self.id = id
         self.name = name
         self.description = description 
-        self.priority = priority
-        self.creation_date = datetime.now()
+        # Priorities: High // Medium // Low
+        self.priority = Task.priorities.get(priority)
+        self.creation_date = date.today()
         self.conclusion_date = conclusion_date
         self.status = "Uninitialized"
-    
-    # needed for using task object as a key in a dictionary
-    def __hash__(self):
-        pass
 
-    # comparison method for sorting purposes
-    def __lt__(self,):
-        pass
+     # needed for using task object as a key in a dictionary    
+    def __hash__(self) -> int:
+        return hash(repr(self))
 
     # needed for the hash() method
     def __eq__(self, other):
-        pass
+        return repr(self) == repr(other)
+
+    # comparison method for sorting purposes
+    # x > y calls x.__gt__(y)
+    def __gt__(self, other):
+        return self.priority > other.priority
     
+    # string representation of a task 
+    # easy way to recreate object
+    def __repr__(self):
+        return "Task({}, '{}', '{}', '{}', {})".format(self.id, self.name, 
+                                                       self.description,
+                                                       self.priority,
+                                                       self.conclusion_date
+                                                       )
+
+    # string representation of a task (end user)
+    def __str__(self):
+        pass
+
     # needs __lt__()
     def sort_by_priority(self,):
         pass
@@ -37,15 +54,11 @@ class Task():
     def sort_by_status(self,):
         pass
     
-    # {task: [sub_task1, subt_task2]}
+    # {task.name: [sub_task1, subt_task2]}
     # for ordering purposes 
     def sub_tasks_collection():
         pass
 
-    # a string representation of a task
-    def __str__(self):
-        pass
-    
     # sets the current status of a task
     def set_status():
         pass
@@ -79,4 +92,8 @@ class Task_Manager():
 
     # command-line argument
     def sorting_tasks():
+        pass
+    
+    # command-line argument
+    def display_tasks():
         pass
