@@ -4,16 +4,20 @@ from functools import total_ordering
 @total_ordering
 class Task():
 
-    priorities = {"None": 0, "Low": 1, "Medium": 2, "High": 3}
-    
-    def __init__(self, id, name, description, priority="None", conclusion_date=None):
+    #priorities = {"None": 0, "Low": 1, "Medium": 2, "High": 3}
+    priorities = (('Undefined', 0), ('Low', 1), ('Medium', 2), ('High', 3))
+
+    def __init__(self, id, name, description, priority="Undefined",
+    conclusion_date="Undefined"):
+        
         self.id = id
         self.name = name
         self.description = description 
-        # Priorities: High // Medium // Low
-        self.priority = Task.priorities.get(priority)
+        # Priorities: Undefined // High // Medium // Low
+        self.priority = priority
         self.creation_date = date.today()
         self.conclusion_date = conclusion_date
+        # Status: Uninitialized // In progress // Completed
         self.status = "Uninitialized"
 
      # needed for using task object as a key in a dictionary    
@@ -40,7 +44,15 @@ class Task():
 
     # string representation of a task (end user)
     def __str__(self):
-        pass
+        return (
+            f"{'Task':^20} | {'Description':^40} | {'Priority':^9} | "
+            f"{'Status':^13} | {'Conclusion Date':^10} | \n"
+            f"{self.name:^20} | "
+            f"{self.description:^40} | "
+            f"{self.priority:^9} | "
+            f"{self.status:^13} | "
+            f"{self.conclusion_date:^15} |"
+        )
 
     # needs __lt__()
     def sort_by_priority(self,):
