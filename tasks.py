@@ -1,13 +1,13 @@
 from datetime import date
 from functools import total_ordering
+from enum import Enum
 
 @total_ordering
 class Task():
 
-    #priorities = {"None": 0, "Low": 1, "Medium": 2, "High": 3}
-    priorities = (('Undefined', 0), ('Low', 1), ('Medium', 2), ('High', 3))
+    priority = Enum('Priority', 'Undefined Low Medium High')
 
-    def __init__(self, id, name, description, priority="Undefined",
+    def __init__(self, id, name, description, priority=priority.Undefined,
     conclusion_date="Undefined"):
         
         self.id = id
@@ -31,10 +31,10 @@ class Task():
     # comparison method for sorting purposes
     # x > y calls x.__gt__(y)
     def __gt__(self, other):
-        return self.priority > other.priority
+        return self.priority.value > other.priority.value
     
-    # string representation of a task 
-    # easy way to recreate object
+     
+    # easy way to recreate a task object
     def __repr__(self):
         return "Task({}, '{}', '{}', '{}', {})".format(self.id, self.name, 
                                                        self.description,
@@ -53,18 +53,6 @@ class Task():
             f"{self.status:^13} | "
             f"{self.conclusion_date:^15} |"
         )
-
-    # needs __lt__()
-    def sort_by_priority(self,):
-        pass
-    
-    # doesn't need __lt__() and __eq__()
-    def sort_by_creation_date(self,):
-        pass
-    
-    # needs __lt__()
-    def sort_by_status(self,):
-        pass
     
     # {task.name: [sub_task1, subt_task2]}
     # for ordering purposes 
