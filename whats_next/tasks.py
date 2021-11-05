@@ -20,7 +20,7 @@ class Task():
         # Status: Uninitialized // In progress // Completed
         self.status = "Uninitialized"
 
-     # needed for using task object as a key in a dictionary    
+    # needed for using task object as a key in a dictionary    
     def __hash__(self) -> int:
         return hash(repr(self))
 
@@ -56,12 +56,12 @@ class Task():
     
     # {task.name: [sub_task1, subt_task2]}
     # for ordering purposes 
-    def sub_tasks_collection():
+    def sub_tasks_collection(self):
         pass
 
     # sets the current status of a task
-    def set_status():
-        pass
+    def set_status(self, status):
+        self.status = status
 
 # may noat be necessary
 class Sub_Task(Task):
