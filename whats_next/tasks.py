@@ -14,8 +14,8 @@ class Task():
         self.name = name
         self.description = description 
         # Priorities: Undefined // High // Medium // Low
-        self.priority = priority
-        self.creation_date = date.today()
+        self.priority = priority.name
+        self.creation_date = date.today().isoformat()
         self.conclusion_date = conclusion_date
         # Status: Uninitialized // In progress // Completed
         self.status = "Uninitialized"
@@ -45,12 +45,11 @@ class Task():
     # string representation of a task (end user)
     def __str__(self):
         return (
-            f"{'Task':^20} | {'Description':^40} | {'Priority':^9} | "
-            f"{'Status':^13} | {'Conclusion Date':^10} | \n"
             f"{self.name:^20} | "
             f"{self.description:^40} | "
             f"{self.priority:^9} | "
             f"{self.status:^13} | "
+            f"{self.creation_date:^15} | "
             f"{self.conclusion_date:^15} |"
         )
     
@@ -71,13 +70,15 @@ class Sub_Task(Task):
 class Task_Manager():
     # instantiate a task object (command-line argument)
     # save the object in a database
-    def create_task():
-        '''selects the id column of the database and 
-           instanciate a new task object with the
-           last id in the table incremented by one.
-        '''
-        id = None
-        pass
+    '''selects the id column of the database and 
+       instanciate a new task object with the
+       last id in the table incremented by one.
+       '''
+    def create_task(id, name, description, priority=Task.priority.undefined, 
+                    conclusion_date="Undefined"
+                    ):
+        #id = None
+        new_task = Task(id, name, description, priority, conclusion_date)
     
     # command-line argument
     # update an existing task of the database
