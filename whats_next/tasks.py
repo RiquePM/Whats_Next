@@ -5,16 +5,15 @@ from enum import Enum
 @total_ordering
 class Task():
 
-    priority = Enum('Priority', 'Undefined Low Medium High')
+    priorities = Enum('Priority', 'Undefined Low Medium High')
 
-    def __init__(self, id, name, description, priority=priority.Undefined,
+    def __init__(self, id, name, description, priority=priorities.Undefined,
     conclusion_date="Undefined"):
         
         self.id = id
         self.name = name
         self.description = description 
-        # Priorities: Undefined // High // Medium // Low
-        self.priority = priority.name
+        self.priority = priority
         self.creation_date = date.today().isoformat()
         self.conclusion_date = conclusion_date
         # Status: Uninitialized // In progress // Completed
@@ -29,16 +28,15 @@ class Task():
         return repr(self) == repr(other)
 
     # comparison method for sorting purposes
-    # x > y calls x.__gt__(y)
-    def __gt__(self, other):
-        return self.priority.value > other.priority.value
+    def __ge__(self, other):
+        return self.priority.value >= other.priority.value
     
      
     # easy way to recreate a task object
     def __repr__(self):
         return "Task({}, '{}', '{}', '{}', {})".format(self.id, self.name, 
                                                        self.description,
-                                                       self.priority,
+                                                       self.priority.name,
                                                        self.conclusion_date
                                                        )
 
@@ -47,7 +45,7 @@ class Task():
         return (
             f"{self.name:^20} | "
             f"{self.description:^40} | "
-            f"{self.priority:^9} | "
+            f"{self.priority.name:^9} | "
             f"{self.status:^13} | "
             f"{self.creation_date:^15} | "
             f"{self.conclusion_date:^15} |"
@@ -62,39 +60,3 @@ class Task():
     def set_status(self, status):
         self.status = status
 
-# may noat be necessary
-class Sub_Task(Task):
-    pass
-
-
-class Task_Manager():
-    # instantiate a task object (command-line argument)
-    # save the object in a database
-    '''selects the id column of the database and 
-       instanciate a new task object with the
-       last id in the table incremented by one.
-       '''
-    def create_task(id, name, description, priority=Task.priority.undefined, 
-                    conclusion_date="Undefined"
-                    ):
-        #id = None
-        new_task = Task(id, name, description, priority, conclusion_date)
-    
-    # command-line argument
-    # update an existing task of the database
-    # see implementations details on trello
-    def modify_task():
-        pass
-    
-    # command-line argument
-    # delete a task from the database
-    def delete_task():
-        pass
-
-    # command-line argument
-    def sorting_tasks():
-        pass
-    
-    # command-line argument
-    def display_tasks():
-        pass
