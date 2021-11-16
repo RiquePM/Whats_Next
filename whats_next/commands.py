@@ -1,23 +1,11 @@
-from tasks import Task_Manager
 import click
 
-
-@click.group()
-def cli():
-    pass
 @click.command()
-@click.argument('id', type=int)
+@click.option('--count', type=int, default=1)
 @click.argument('name')
-@click.argument('description')
-def create_task(id, name, description):
-    pass
-
-@click.command()
-def show_tasks():
-    pass
-
-cli.add_command(create_task)
-cli.add_command(show_tasks)
+def hello(name, count):
+    for i in range(count):
+        click.echo(f'Hello {name}!')
 
 if __name__ == '__main__':
-    cli()
+    hello()

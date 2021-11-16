@@ -1,26 +1,27 @@
 from datetime import date
 from functools import total_ordering
 from enum import Enum
+import click
+
 
 @total_ordering
 class Task():
 
     priorities = Enum('Priority', 'Undefined Low Medium High')
 
-    def __init__(self, id, name, description, priority=priorities.Undefined,
+    def __init__(self, id, name, description, priority='Undefined',
     conclusion_date="Undefined"):
-        
+
         self.id = id
         self.name = name
-        self.description = description 
-        self.priority = priority
+        self.description = description
+        self.set_priority(priority)
         self.creation_date = date.today().isoformat()
         self.conclusion_date = conclusion_date
-        # Status: Uninitialized // In progress // Completed
         self.status = "Uninitialized"
 
     # needed for using task object as a key in a dictionary    
-    def __hash__(self) -> int:
+    def __hash__(self):
         return hash(repr(self))
 
     # needed for the hash() method
@@ -56,7 +57,31 @@ class Task():
     def sub_tasks_collection(self):
         pass
 
+    def set_priority(self, priority):
+        if priority != 'Undefined':
+            for priority_name in Task.priorities:
+                if priority == priority_name.name:
+                    self.priority = priority_name
+        else: 
+            self.priority = Task.priorities.Undefined
+    
+
     # sets the current status of a task
     def set_status(self, status):
         self.status = status
 
+
+@click.command()
+@click.argument('id', type=int)
+@click.argument('name')
+@click.argument('description')
+@click.option('--priority', 
+               default='Undefined', 
+               type=click.Choice(['Undefined', 'Low', 'Medium', 'High'],
+               case_sensitive=False))
+def create_task(id, name, description, priority):
+    new_task = Task(id, name, description, priority)
+    return click.echo(new_task)
+
+if __name__ == '__main__':
+    create_task()
